@@ -2,7 +2,9 @@
 
 namespace App;
 
+
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Photo extends Model
 {
@@ -15,6 +17,7 @@ class Photo extends Model
      */
     protected $fillable = ['path'];
 
+    protected $baseDir = 'house/images';
 
 	/**
 	 * A photo has belongsto Flyer
@@ -23,5 +26,18 @@ class Photo extends Model
     public function flyer()
     {
     	return $this->belongsTo(\App\Flyer::class);
+    }
+
+    public static function fromForm(UploadedFile $file)
+    {
+        $photo = new static;
+        $fileName = time() . $file->getClientOriginalName();
+
+        $photo->path =  $photo->baseDir . '/' . $fileName;
+
+        // where the file be store?
+        $file->move($photo->baseDir, $fileName);
+
+        return $photo;
     }
 }

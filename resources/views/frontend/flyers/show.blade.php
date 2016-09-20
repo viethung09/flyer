@@ -35,7 +35,7 @@
                   <h2>{!! $flyer->price !!}</h2>
                   <div class="description">{!! nl2br($flyer->description) !!}</div>
                   <br>
-                  <form action="/{{ $flyer->zip }}/{{ $flyer->street }}/photos" class="dropzone" method="POST">
+                  <form id="addPhotosForm" method="POST" action="{{ route('store_photo_path', [$flyer->zip, $flyer->street]) }}" class="dropzone" >
                     {{ csrf_field() }}
                   </form>
                 </div>
@@ -75,4 +75,11 @@
 
 @section('scripts.footer')
   <script src="js/dropzone.min.js"></script>
+  <script>
+    Dropzone.options.addPhotosForm = {
+      paramName: 'photo',
+      maxFilesize: 3,
+      acceptedFile: '.jpg, .jpeg, .png, .bmp'
+    }
+  </script>
 @stop

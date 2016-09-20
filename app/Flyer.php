@@ -23,8 +23,7 @@ class Flyer extends Model
 	];
 
 	/**
-	 * fetch the flyer for the given address
-	 * @param  Builder $query  
+	 * Find the flyer for the given address
 	 * @param  string $zip    
 	 * @param  string $street 
 	 * @return Builder
@@ -32,7 +31,12 @@ class Flyer extends Model
 	public function scopeLocatedAt($query, $zip, $street)
 	{
 		$street = str_replace('-', ' ', $street); // url maybe use - for clear
-		return $query->where(compact('zip', 'street'));
+		return $query->where(compact('zip', 'street'))->first();
+	}
+
+	public function addPhotos(Photo $photo)
+	{
+		return $this->photos()->save($photo);
 	}
 
 	public function getPriceAttribute($price)
