@@ -30,6 +30,11 @@ class FlyersController extends Controller
     	return view('frontend.flyers.create');
     }
 
+    /**
+     * create and store a new flyer.
+     * @param  FlyerRequest $flyerRequest 
+     * @return void
+     */
     public function store(FlyerRequest $flyerRequest)
     {
         // persist the flyer
@@ -41,6 +46,12 @@ class FlyersController extends Controller
         return view('frontend.flyers.create'); // temporary
     }
 
+    /**
+     * detail flyer
+     * @param  string $zip    
+     * @param  string $street 
+     * @return void
+     */
     public function show($zip, $street)
     {
         $flyer = Flyer::locatedAt($zip, $street); // if model not found then listen to it and response to 404 page.
@@ -65,6 +76,11 @@ class FlyersController extends Controller
         Flyer::locatedAt($zip, $street)->addPhotos($photo);
     }
 
+    /**
+     * named a phpto and move it
+     * @param  UploadedFile $file 
+     * @return App\Photo
+     */
     protected function makePhoto(UploadedFile $file)
     {
         return Photo::named($file->getClientOriginalName())
