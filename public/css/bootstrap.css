@@ -5731,4 +5731,10 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+img {
+  max-width: 100%; }
+
+.gallery__image {
+  margin-bottom: 1em; }
+
 /*# sourceMappingURL=bootstrap.css.map */

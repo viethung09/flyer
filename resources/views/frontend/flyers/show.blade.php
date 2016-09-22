@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 gallery">
         <div class="box box-solid box-primary">
           <div class="box-header">
             <h1 class="box-title">Your House Photos</h1>
@@ -56,8 +56,14 @@
               <!-- general form elements disabled -->
               <div class="box box-primary">
                 <div class="box-body">
-                @foreach($flyer->photos as $photo)
-                  <img src="{{ $photo->path }}" alt="">
+                @foreach($flyer->photos->chunk(4) as $set)
+                  <div class="row">
+                    @foreach($set as $photo)
+                      <div class="col-md-3 gallery__image">
+                        <img src="{{ $photo->thumbnail_path }}" alt="">
+                      </div>
+                    @endforeach
+                  </div>
                 @endforeach
                 </div>
                 <!-- /.box-body -->

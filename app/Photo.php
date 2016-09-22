@@ -2,7 +2,7 @@
 
 namespace App;
 
-
+use Image;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -15,7 +15,7 @@ class Photo extends Model
      *
      * @var array
      */
-    protected $fillable = ['path'];
+    protected $fillable = ['path', 'name', 'thumbnail_path'];
 
     protected $baseDir = 'house/images';
 
@@ -28,16 +28,42 @@ class Photo extends Model
     	return $this->belongsTo(\App\Flyer::class);
     }
 
-    public static function fromForm(UploadedFile $file)
+    /**
+     * Build a new photo instance from a file upload.
+     * @param  string $name 
+     * @return seft
+     */
+    public static function named($name)
     {
-        $photo = new static;
-        $fileName = time() . $file->getClientOriginalName();
+        return (new static)->saveAs($name);
+    }
 
-        $photo->path =  $photo->baseDir . '/' . $fileName;
+    /**
+     * Set the name, path, thumbnail of photo
+     * @param  string $name name of photo
+     * @return App\Photo
+     */
+    public function saveAs($name)
+    {
+        $this->name = sprintf("%s-%s", time(), $name);
+        $this->path = sprintf("%s/%s", $this->baseDir, $this->name);
+        $this->thumbnail_path = sprintf("%s/tn-%s", $this->baseDir, $this->name);
 
-        // where the file be store?
-        $file->move($photo->baseDir, $fileName);
+        return $this;
+    }
 
-        return $photo;
+    public function move(UploadedFile $file)
+    {
+        $file->move($this->baseDir, $this->name); // move method from UploadedFile
+        $this->makeThumbnail();
+
+        return $this;
+    }
+
+    protected function makeThumbnail()
+    {
+        Image::make($this->path)
+            ->fit(200)
+            ->save($this->thumbnail_path);
     }
 }

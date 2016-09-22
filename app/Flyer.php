@@ -28,10 +28,10 @@ class Flyer extends Model
 	 * @param  string $street 
 	 * @return Builder
 	 */
-	public function scopeLocatedAt($query, $zip, $street)
+	public static function locatedAt( $zip, $street)
 	{
 		$street = str_replace('-', ' ', $street); // url maybe use - for clear
-		return $query->where(compact('zip', 'street'))->first();
+		return static::where(compact('zip', 'street'))->firstOrFail();
 	}
 
 	public function addPhotos(Photo $photo)
