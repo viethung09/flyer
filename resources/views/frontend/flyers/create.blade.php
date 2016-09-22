@@ -19,7 +19,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
         <div class="box box-solid box-primary">
           <div class="box-header">
             <h1 class="box-title">Let Create your own Flyer.</h1>

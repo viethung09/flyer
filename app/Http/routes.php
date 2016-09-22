@@ -11,13 +11,15 @@
 |
 */
 
-Route::get('/backend', function () {
-    return view('backend.index');
-});
 
-Route::get('/', function () {
-    return view('frontend.home');
-});
+
+Route::get('/home', 'HomeController@index');
+
+Route::auth();
+
+Route::get('/', 'HomeController@index');
+
+Route::get('/home', 'HomeController@index');
 
 Route::resource('flyers', 'FlyersController');
 
@@ -26,5 +28,4 @@ Route::post('{zip}/{street}/photos', [
 	'as' => 'store_photo_path',
 	'uses' => 'FlyersController@addPhoto'
 ]);
-
 
