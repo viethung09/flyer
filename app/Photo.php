@@ -39,7 +39,7 @@ class Photo extends Model
     }
 
     /**
-     * Set the name, path, thumbnail of photo
+     * Set the name, path, thumbnail path for a photo
      * @param  string $name name of photo
      * @return App\Photo
      */
@@ -52,6 +52,11 @@ class Photo extends Model
         return $this;
     }
 
+    /**
+     * Make a thumbnail, and move both original vs thumbnail in base directory
+     * @param  UploadedFile $file 
+     * @return Photo instance
+     */
     public function move(UploadedFile $file)
     {
         $file->move($this->baseDir, $this->name); // move method from UploadedFile

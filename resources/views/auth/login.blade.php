@@ -21,7 +21,7 @@
         @endif
       </div>
       <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
-        <input id="password" type="password" class="form-control" placeholder="Password">
+        <input id="password" type="password" class="form-control" name="password" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         @if ($errors->has('password'))
           <span class="help-block">

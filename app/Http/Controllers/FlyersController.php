@@ -7,6 +7,7 @@ use App\Photo;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Requests\FlyerRequest;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FlyersController extends Controller
@@ -15,6 +16,7 @@ class FlyersController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'show']);
+        parent::__construct();
     }
 
     public function index()
@@ -71,13 +73,25 @@ class FlyersController extends Controller
             'photo' => 'required|mimes:jpg,jpeg,png,bmp'
         ]);
 
+        $flyer = Flyer::locatedAt($zip, $street);
+
+        if ($flyer->user_id !== Auth::id()) {
+            if ($request->ajax()) {
+                return response(['message' => 'Nope!'], 403);
+            }
+
+            flash('no way.');
+
+            return redirect('/');
+        }
+
         $photo = $this->makePhoto($request->file('photo'));
 
-        Flyer::locatedAt($zip, $street)->addPhotos($photo);
+        $flyer->addPhotos($photo);
     }
 
     /**
-     * named a phpto and move it
+     * named a photo and move it
      * @param  UploadedFile $file 
      * @return App\Photo
      */
