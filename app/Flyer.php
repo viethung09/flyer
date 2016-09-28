@@ -41,7 +41,7 @@ class Flyer extends Model
 
 	public function getPriceAttribute($price)
 	{
-		return 'VNĐ' . number_format($price);
+		return '$' . number_format($price);
 	}
 
 	/**
@@ -51,5 +51,19 @@ class Flyer extends Model
     public function photos()
     {
     	return $this->hasMany(\App\Photo::class);
+    }
+
+    public static function createFlyer($id, $flyerRequest)
+    {
+    	$flyer = new static();
+        $flyer->user_id = $id;
+        $flyer->street = $flyerRequest->street;
+        $flyer->city = $flyerRequest->city;
+        $flyer->state = $flyerRequest->state;
+        $flyer->country = $flyerRequest->country;
+        $flyer->zip = $flyerRequest->zip;
+        $flyer->price = $flyerRequest->price;
+        $flyer->description = $flyerRequest->description;
+        $flyer->save();
     }
 }
