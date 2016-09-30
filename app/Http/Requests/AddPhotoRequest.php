@@ -5,9 +5,16 @@ namespace App\Http\Requests;
 use Auth;
 use App\Flyer;
 use App\Http\Requests\Request;
+use Illuminate\Contracts\Auth\Guard;
 
 class AddPhotoRequest extends Request
 {
+    protected $guard;
+
+    public function __construct(Guard $guard)
+    {
+        $this->guard = $guard;
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -15,15 +22,14 @@ class AddPhotoRequest extends Request
      */
     public function authorize()
     {
-        if (Auth::check()) {
-            return Flyer::where([
-                'zip' => $this->zip,
-                'street' => $this->street,
-                'user_id' => $this->user()->id
-            ])->exists();
+        if (! $this->guard->check()) {
+            return false;
         }
-
-        return false;
+        return Flyer::where([
+            'zip' => $this->zip,
+            'street' => $this->street,
+            'user_id' => $this->user()->id
+        ])->exists();
     }
 
     /**
