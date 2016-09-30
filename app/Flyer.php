@@ -14,6 +14,7 @@ class Flyer extends Model
 	 * @var array
 	 */
 	protected $fillable = [
+		'title',
 		'street',
 		'city',
 		'state',
@@ -42,7 +43,7 @@ class Flyer extends Model
 
 	public function getPriceAttribute($price)
 	{
-		return '$' . number_format($price);
+		return 'VND' . number_format($price);
 	}
 
 	/**
@@ -73,17 +74,19 @@ class Flyer extends Model
     	return $this->user_id === $user->id;
     }
 
-    public static function createFlyer($id, $flyerRequest)
-    {
-    	$flyer = new static();
-        $flyer->user_id = $id;
-        $flyer->street = $flyerRequest->street;
-        $flyer->city = $flyerRequest->city;
-        $flyer->state = $flyerRequest->state;
-        $flyer->country = $flyerRequest->country;
-        $flyer->zip = $flyerRequest->zip;
-        $flyer->price = $flyerRequest->price;
-        $flyer->description = $flyerRequest->description;
-        $flyer->save();
-    }
+
+    // public static function createFlyer($id, $flyerRequest)
+    // {
+    // 	$flyer = new static();
+    //     $flyer->user_id = $id;
+    //     $flyer->title = $flyerRequest->title;
+    //     $flyer->street = $flyerRequest->street;
+    //     $flyer->city = $flyerRequest->city;
+    //     $flyer->state = $flyerRequest->state;
+    //     $flyer->country = $flyerRequest->country;
+    //     $flyer->zip = $flyerRequest->zip;
+    //     $flyer->price = $flyerRequest->price;
+    //     $flyer->description = $flyerRequest->description;
+    //     $flyer->save();
+    // }
 }

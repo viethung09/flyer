@@ -17,61 +17,45 @@
   <!-- Main content -->
   <section class="content">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12">
+
         <div class="box box-solid box-primary">
           <div class="box-header">
-            <h1 class="box-title">{!! $flyer->street !!}</h1>
+            <span class="glyphicon glyphicon-home"></span>
+            <h3 class="box-title">{!! $flyer->title !!}</h3>
           </div>
           <div class="box-body">
-            <!-- right column -->
-              <!-- general form elements disabled -->
-              <div class="box box-primary">
-                <div class="box-header">
-                  <span class="glyphicon glyphicon-home"></span>
-                  <h3 class="box-title">Which hourse you are selling?</h3>
-                </div>
-                <!-- /.box-header -->
                 <div class="box-body">
-                  <h2>{!! $flyer->price !!}</h2>
-                  <div class="description">{!! nl2br($flyer->description) !!}</div>
-                  <br>
-                  <form id="addPhotosForm" method="POST" action="{{ route('store_photo_path', [$flyer->zip, $flyer->street]) }}" class="dropzone" >
-                    {{ csrf_field() }}
-                  </form>
-                </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            <!--/.col (right) -->
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 gallery">
-        <div class="box box-solid box-primary">
-          <div class="box-header">
-            <h1 class="box-title">Your House Photos</h1>
-          </div>
-          <div class="box-body">
-            <!-- right column -->
-              <!-- general form elements disabled -->
-              <div class="box box-primary">
-                <div class="box-body">
-                @foreach($flyer->photos->chunk(4) as $set)
                   <div class="row">
-                    @foreach($set as $photo)
-                      <div class="col-md-3 gallery__image">
-                        <img src="{{ $photo->thumbnail_path }}" alt="">
+                    <div class="col-md-6">
+                      <h4><b>Address:</b> {!! $flyer->street !!}</h4>
+                      <h4><b>Prices: </b>{!! $flyer->price !!}</h4>
+                      <div class="description">
+                        <h4><b>House Detail: </b></h4>
+                        <h4>{!! nl2br($flyer->description) !!}</h4>
                       </div>
-                    @endforeach
+
+                    </div>
+                    <div class="col-md-6">
+                      @foreach($flyer->photos->chunk(4) as $set)
+                        <div class="row">
+                          @foreach($set as $photo)
+                            <div class="col-md-3 gallery__image">
+                              <img src="{{ $photo->thumbnail_path }}" alt="">
+                            </div>
+                          @endforeach
+                        </div>
+                      @endforeach
+                      <form id="addPhotosForm" method="POST" action="{{ route('store_photo_path', [$flyer->zip, $flyer->street]) }}" class="dropzone" >
+                        {{ csrf_field() }}
+                      </form>
+                    </div>
                   </div>
-                @endforeach
                 </div>
                 <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            <!--/.col (right) -->
           </div>
         </div>
+
       </div>
     </div>
   </section>

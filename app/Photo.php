@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Image;
+
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Photo extends Model
 {
@@ -17,8 +16,6 @@ class Photo extends Model
      */
     protected $fillable = ['path', 'name', 'thumbnail_path'];
 
-    protected $baseDir = 'house/images';
-
 	/**
 	 * A photo has belongsto Flyer
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -28,47 +25,19 @@ class Photo extends Model
     	return $this->belongsTo(\App\Flyer::class);
     }
 
-    /**
-     * Build a new photo instance from a file upload.
-     * @param  string $name 
-     * @return seft
-     */
-    public static function named($name)
+
+
+    public function baseDir()
     {
-        return (new static)->saveAs($name);
+        return 'house/images';
     }
 
-    /**
-     * Set the name, path, thumbnail path for a photo
-     * @param  string $name name of photo
-     * @return App\Photo
-     */
-    public function saveAs($name)
+    public function setNameAttribute($name)
     {
-        $this->name = sprintf("%s-%s", time(), $name);
-        $this->path = sprintf("%s/%s", $this->baseDir, $this->name);
-        $this->thumbnail_path = sprintf("%s/tn-%s", $this->baseDir, $this->name);
+        $this->attributes['name'] = $name;
 
-        return $this;
+        $this->path = $this->baseDir() . '/' . $name;
+        $this->thumbnail_path = $this->baseDir() . '/tn-' . $name;
     }
 
-    /**
-     * Make a thumbnail, and move both original vs thumbnail in base directory
-     * @param  UploadedFile $file 
-     * @return Photo instance
-     */
-    public function move(UploadedFile $file)
-    {
-        $file->move($this->baseDir, $this->name); // move method from UploadedFile
-        $this->makeThumbnail();
-
-        return $this;
-    }
-
-    protected function makeThumbnail()
-    {
-        Image::make($this->path)
-            ->fit(200)
-            ->save($this->thumbnail_path);
-    }
 }

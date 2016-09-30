@@ -16,13 +16,13 @@ class CreateFlyersTable extends Migration
             $table->increments('id');
 
             $table->integer('user_id')->unsigned();
-            
+            $table->string('title', 100);
             $table->string('street');
             $table->string('city', 40);
             $table->string('zip', 40);
             $table->string('state', 40);
             $table->string('country', 40);
-            $table->integer('price');
+            $table->decimal('price', 12, 0);
             $table->text('description');
             $table->timestamps();
         });

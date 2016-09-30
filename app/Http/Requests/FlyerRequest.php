@@ -24,6 +24,7 @@ class FlyerRequest extends Request
     public function rules()
     {
         return [
+            'title' => 'required|max:255',
             'street' => 'required|max:255',
             'city' => 'required|max:255',
             'zip' => 'required|max:255',
@@ -42,6 +43,7 @@ class FlyerRequest extends Request
     public function messages()
     {
         return [
+            'title.required' => 'Hãy nhập tên tiêu đề',
             'street.required' => 'Hãy nhập tên đường',
             'city.required' => 'Hãy nhập tên thành phố',
             'zip.required' => 'Hãy nhập zip/postal code',

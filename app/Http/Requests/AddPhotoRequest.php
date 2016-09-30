@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Auth;
 use App\Flyer;
 use App\Http\Requests\Request;
 
-class ChangeFlyerRequest extends Request
+class AddPhotoRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,11 +15,15 @@ class ChangeFlyerRequest extends Request
      */
     public function authorize()
     {
-        return Flyer::where([
-            'zip' => $this->zip,
-            'street' => $this->street,
-            'user_id' => $this->user()->id
-        ])->exists();
+        if (Auth::check()) {
+            return Flyer::where([
+                'zip' => $this->zip,
+                'street' => $this->street,
+                'user_id' => $this->user()->id
+            ])->exists();
+        }
+
+        return false;
     }
 
     /**
