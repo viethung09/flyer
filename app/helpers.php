@@ -26,3 +26,17 @@ function flyer_path($flyer)
 {
 	return $flyer->zip . '/' . str_replace(' ', '-', $flyer->street);
 }
+
+/**
+ * checkin A Flyer has owned by user
+ * @param  User  $user  
+ * @param  Flyer  $flyer 
+ * @return boolean
+ */
+function isUserOwnsFlyer($user, $flyer)
+{
+	if ($user && $flyer->user_id === Auth::id()) {
+		return true;
+	}
+	return false;
+}
